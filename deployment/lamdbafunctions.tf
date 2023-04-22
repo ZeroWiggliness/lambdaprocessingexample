@@ -84,7 +84,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 data "archive_file" "filecheck" {
   type        = "zip"
   source_dir = "./FileCheckFunction"
-  output_path = "FileCheckFunction.zip"
+  output_path = "./FileCheckFunction.zip"
 }
 
 resource "aws_lambda_function" "filecheck" {
