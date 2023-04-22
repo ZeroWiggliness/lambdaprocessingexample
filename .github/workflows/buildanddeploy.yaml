@@ -19,9 +19,6 @@ jobs:
       - name: Terraform Init
         working-directory: ./deployment
         run: terraform init
-      - name: Terraform Plan
-        working-directory: ./deployment
-        run: terraform plan -out=tfplan
       - name: Terraform Apply
         working-directory: ./deployment
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve
