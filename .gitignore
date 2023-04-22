@@ -1,2 +1,4 @@
 /deployment/.terraform.lock.hcl
 .terraform
+bin
+obj
