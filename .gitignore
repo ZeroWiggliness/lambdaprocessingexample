@@ -2,3 +2,5 @@
 .terraform
 bin
 obj
+.vs
+*.user

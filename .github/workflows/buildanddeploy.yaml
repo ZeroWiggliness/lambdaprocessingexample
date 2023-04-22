@@ -23,9 +23,27 @@ jobs:
         with:
           name: FileCheckFunction
           path: ./publish
+  process:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:6.0
+    env:
+      AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_WORKSPACE: default
+      TF_IN_AUTOMATION: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build package
+        run: dotnet publish "./ProcessingFunction/src/ProcessingFunction" --output "./publish" --configuration "Release" --framework "net6.0" /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 --self-contained False
+      - name: Store artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ProcessingFunction
+          path: ./publish
   terraform:
     runs-on: ubuntu-latest
-    needs: [filecheck]
+    needs: [filecheck, process]
     container: hashicorp/terraform:1.3.9
     env:
       AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
@@ -35,11 +53,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Download artifacts
+      - name: Download filecheck
         uses: actions/download-artifact@v3
         with:
           name: FileCheckFunction
           path: ./FileCheckFunction
+      - name: Download processing
+        uses: actions/download-artifact@v3
+        with:
+          name: ProcessingFunction
+          path: ./ProcessingFunction
       - name: Terraform Init
         working-directory: ./deployment
         run: terraform init
