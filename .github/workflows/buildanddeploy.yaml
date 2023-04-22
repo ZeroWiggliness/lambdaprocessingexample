@@ -39,7 +39,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: FileCheckFunction
-          path: FileCheckFunction
+          path: ./FileCheckFunction
       - name: Terraform Init
         working-directory: ./deployment
         run: terraform init
