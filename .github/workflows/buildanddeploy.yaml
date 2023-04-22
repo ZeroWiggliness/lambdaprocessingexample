@@ -1,5 +1,7 @@
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -13,8 +15,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Terraform Init
+        working-directory: ./deployment
         run: terraform init
       - name: Terraform Plan
+        working-directory: ./deployment
         run: terraform plan -out=tfplan
       - name: Terraform Apply
+        working-directory: ./deployment
         run: terraform apply -auto-approve tfplan
