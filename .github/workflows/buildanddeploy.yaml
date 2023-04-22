@@ -25,6 +25,7 @@ jobs:
           path: ./publish
   terraform:
     runs-on: ubuntu-latest
+    needs: [filecheck]
     container: hashicorp/terraform:1.3.9
     env:
       AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
