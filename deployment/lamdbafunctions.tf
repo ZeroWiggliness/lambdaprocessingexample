@@ -105,13 +105,6 @@ resource "aws_lambda_function" "filecheck" {
   
 }
 
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
-  event_source_arn = aws_sqs_queue.processing.arn
-  enabled          = true
-  function_name    = "${aws_lambda_function.processing.arn}"
-  batch_size       = 1
-}
-
 resource "aws_s3_bucket_notification" "filecheck" {
   bucket = aws_s3_bucket.filestorage.id
 
