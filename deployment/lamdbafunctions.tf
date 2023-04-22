@@ -111,7 +111,6 @@ resource "aws_s3_bucket_notification" "filecheck" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.filecheck.arn
     events              = ["s3:ObjectCreated:Put"]
-  #  filter_prefix       = ""
     filter_suffix       = ".csv"
   }
 
